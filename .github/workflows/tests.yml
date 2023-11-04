@@ -4,7 +4,6 @@ on: push
 
 env:
   GO111MODULE: "on"
-  GOROOT: $GOROOT
 
 jobs:
   lint:
@@ -18,6 +17,9 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
+      - name: Set GOROOT
+        run: echo "GOROOT=$GOROOT" >> $GITHUB_ENV  
+        
       - name: linter
         uses: golangci/golangci-lint-action@v3
         with: 
