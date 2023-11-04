@@ -2,6 +2,10 @@ name: run tests and linters
 
 on: push
 
+env:
+  GO111MODULE: "on"
+  GOROOT: $GOROOT
+
 jobs:
   lint:
     runs-on: ubuntu-20.04
