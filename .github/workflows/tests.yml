@@ -12,14 +12,11 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.21.x'
+          go-version: '1.19.x'
 
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Set GOROOT
-        run: echo "GOROOT=$GOROOT" >> $GITHUB_ENV  
-        
       - name: linter
         uses: golangci/golangci-lint-action@v3
         with: 
@@ -31,7 +28,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.21.x'
+          go-version: '1.19.x'
 
       - name: Check out code
         uses: actions/checkout@v3
