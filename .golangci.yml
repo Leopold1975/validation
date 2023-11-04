@@ -20,7 +20,6 @@ linters:
     - gci
     - gocognit
     - goconst
-    - gocritic
     - gocyclo
     - gofmt
     - gofumpt
