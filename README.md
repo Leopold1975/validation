@@ -1,6 +1,6 @@
 # Validation
 
-![![Tests status](https://github.com/Leopold1975/validation/actions/workflows/tests.yml/badge.svg)](https://github.com/Leopold1975/validation/actions/workflows/tests.yml)
+[![Tests status](https://github.com/Leopold1975/validation/actions/workflows/tests.yml/badge.svg)](https://github.com/Leopold1975/validation/actions/workflows/tests.yml)
 
 The Validation project is a Go library for structure validation.
 Validation allows you to define validation rules for structure fields and check if the values stick to the rules.
