@@ -1,6 +1,6 @@
 # Validation
 
-[![Checks status](https://github.com/Leopold1975/validation/actions/workflows/tests.yml/badge.svg)](https://github.com/Leopold1975/validation/actions/workflows/tests.yml)
+[![Tests status](https://github.com/Leopold1975/validation/actions/workflows/tests.yml/badge.svg)](https://github.com/Leopold1975/validation/actions/workflows/tests.yml)
 
 The Validation project is a Go library for structure validation.
 Validation allows you to define validation rules for structure fields and check if the values stick to the rules.
@@ -80,3 +80,7 @@ Validate-12         3.042k ± 0%
 GoValidate-12                      15.82k ± 0%
 geomean             3.042k         15.82k       ? ¹ ²
 ```
+
+## Contribution
+
+If you have any suggestions or fixes, feel free to contribute. The project is open for pull requests and discussions.
