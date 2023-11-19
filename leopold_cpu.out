@@ -1,0 +1,16 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Leopold1975/validation
+cpu: 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz
+BenchmarkValidate-12    	    9100	    148266 ns/op
+BenchmarkValidate-12    	    8947	    180798 ns/op
+BenchmarkValidate-12    	    6879	    220540 ns/op
+BenchmarkValidate-12    	    6598	    192279 ns/op
+BenchmarkValidate-12    	    6297	    161043 ns/op
+BenchmarkValidate-12    	    5284	    207087 ns/op
+BenchmarkValidate-12    	    5791	    202824 ns/op
+BenchmarkValidate-12    	    6522	    186450 ns/op
+BenchmarkValidate-12    	    9063	    148419 ns/op
+BenchmarkValidate-12    	    9013	    156202 ns/op
+PASS
+ok  	github.com/Leopold1975/validation	17.381s

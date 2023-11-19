@@ -1,0 +1,11 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Leopold1975/validation
+cpu: 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz
+              │ leopold_cpu.out │ govalidator_cpu.out │
+              │     sec/op      │    sec/op     vs base   │
+Validate-12        183.6µ ± 19%
+GoValidate-12                     1.185m ± 12%
+geomean            183.6µ         1.185m        ? ¹ ²
+¹ benchmark set differs from baseline; geomeans may not be comparable
+² ratios must be >0 to compute geomean
