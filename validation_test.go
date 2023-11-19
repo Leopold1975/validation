@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/Leopold1975/validation"
+	"github.com/asaskevich/govalidator"
 	"github.com/stretchr/testify/require"
 )
 
@@ -14,17 +15,17 @@ type UserRole string
 
 type (
 	User struct {
-		ID     string `json:"id" validate:"len:36"`
+		ID     string `json:"id" validate:"len:36" valid:"stringlength(36|36)"`
 		Name   string
-		Age    int      `validate:"min:18|max:50"`
-		Email  string   `validate:"regexp:^\\w+@\\w+\\.\\w+$"`
-		Role   UserRole `validate:"in:admin,stuff|len:5"`
-		Phones []string `validate:"len:11"`
+		Age    int      `json:"Age" validate:"min:18|max:50" valid:"range(18|50)"`
+		Email  string   `json:"Email" validate:"regexp:^\\w+@\\w+\\.\\w+$" valid:"matches(^\\w+@\\w+\\.\\w+$)"`
+		Role   UserRole `json:"Role" validate:"in:admin,stuff|len:5" valid:"in(admin|stuff)"`
+		Phones []string `json:"Phones" validate:"len:11" valid:"stringlength(11|11)"`
 		meta   json.RawMessage
 	}
 
 	App struct {
-		Version string `validate:"len:5"`
+		Version string `json:"v" validate:"len:5" valid:"stringlength(5|5)"`
 	}
 
 	Token struct {
@@ -34,33 +35,35 @@ type (
 	}
 
 	Response struct {
-		Code int    `validate:"in:200,404,500"`
+		Code int    `json:"c" validate:"in:200,404,500" valid:"in(200|404|500)"`
 		Body string `json:"omitempty"`
 	}
 	TestStruct struct {
-		TestStringLen   string   `validate:"len:4"`
-		TestStringSlice []string `validate:"len:2"`
-		TestInStrings   string   `validate:"in:foo,bar"`
-		TestInInt       int      `validate:"in:16,24"`
-		TestInSliceStr  []string `validate:"in:foo,bar"`
-		TestInSliceInt  []int    `validate:"in:16,8"`
-		TestRegexp      string   `validate:"regexp:^\\d+$"`
-		TestRegexpSlice []string `validate:"regexp:^[A-Z]+[a-z]+$"`
-		TestIntMin      int      `validate:"min:8"`
-		TestIntMax      int      `validate:"max:8"`
-		TestIntMinSlice []int    `validate:"min:5"`
-		TestIntMaxSlice []int    `validate:"max:5"`
+		TestStringLen   string   `json:"c1" validate:"len:4" valid:"stringlength(4|4)"`
+		TestStringSlice []string `json:"c2" validate:"len:2" valid:"stringlength(2|2)"`
+		TestInStrings   string   `json:"c3" validate:"in:foo,bar" valid:"in(foo|bar)"`
+		TestInInt       int      `json:"c4" validate:"in:16,24" valid:"in(16|24)"`
+		TestInSliceStr  []string `json:"c5" validate:"in:foo,bar" valid:"in(foo|bar)"`
+		TestInSliceInt  []int    `json:"c6" validate:"in:16,8" valid:"in(16|8)"`
+		TestRegexp      string   `json:"c7" validate:"regexp:^\\d+$" valid:"matches(^\\d+$)"`
+		TestRegexpSlice []string `json:"c8" validate:"regexp:^[A-Z]+[a-z]+$" valid:"matches(^[A-Z]+[a-z]+$)"`
+		TestIntMin      int      `json:"c9" validate:"min:8" valid:"range(8|1000000000000000)"`
+		TestIntMax      int      `json:"c10" validate:"max:8" valid:"range(0|8)"`
+		TestIntMinSlice []int    `json:"c11" validate:"min:5" valid:"range(5|10000000000000000)"`
+		TestIntMaxSlice []int    `json:"c12" validate:"max:5" valid:"range(0|5)"`
 	}
 	NestedStruct struct {
 		Resp Response
-		Name string `validate:"len:6"`
+		Name string `json:"c12" validate:"len:6" valid:"stringlength(6|6)"`
 	}
 )
 
-var testCases = []struct {
-	in          interface{}
+type TestCase struct {
+	In          interface{} `json:"in"`
 	expectedErr error
-}{
+}
+
+var testCases = []TestCase{
 	{
 		TestStruct{
 			TestStringLen:   "good",
@@ -270,7 +273,7 @@ func TestValidate(t *testing.T) {
 			tt := tt
 			// t.Parallel()
 
-			err := validation.Validate(tt.in)
+			err := validation.Validate(tt.In)
 
 			require.Equal(t, tt.expectedErr, err)
 		})
@@ -377,6 +380,23 @@ func TestErr(t *testing.T) {
 		t.Run(fmt.Sprintf("case %d", i), func(t *testing.T) {
 			err := validation.Validate(tt.in)
 			require.Equal(t, tt.expectedErr.Error(), err.Error())
+		})
+	}
+}
+
+func TestGovalidator(t *testing.T) {
+	for i, tt := range testCases {
+		t.Run(fmt.Sprintf("case %d", i), func(t *testing.T) {
+			b, err := govalidator.ValidateStruct(tt)
+			if tt.expectedErr == nil {
+				require.True(t, b)
+				require.Nil(t, err)
+			} else if errors.Is(tt.expectedErr, validation.ErrUnsupportedType) || errors.Is(tt.expectedErr, validation.ErrWrongValue) {
+				require.Nil(t, err)
+			} else {
+				require.False(t, b)
+				require.NotNil(t, err)
+			}
 		})
 	}
 }
