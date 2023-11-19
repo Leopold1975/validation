@@ -388,12 +388,13 @@ func TestGovalidator(t *testing.T) {
 	for i, tt := range testCases {
 		t.Run(fmt.Sprintf("case %d", i), func(t *testing.T) {
 			b, err := govalidator.ValidateStruct(tt)
-			if tt.expectedErr == nil {
+			switch {
+			case tt.expectedErr == nil:
 				require.True(t, b)
 				require.Nil(t, err)
-			} else if errors.Is(tt.expectedErr, validation.ErrUnsupportedType) || errors.Is(tt.expectedErr, validation.ErrWrongValue) {
+			case errors.Is(tt.expectedErr, validation.ErrUnsupportedType) || errors.Is(tt.expectedErr, validation.ErrWrongValue):
 				require.Nil(t, err)
-			} else {
+			default:
 				require.False(t, b)
 				require.NotNil(t, err)
 			}

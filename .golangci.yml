@@ -47,7 +47,6 @@ linters:
     - sqlclosecheck
     - staticcheck
     - stylecheck
-    - tagliatelle
     - thelper
     - tparallel
     - typecheck
